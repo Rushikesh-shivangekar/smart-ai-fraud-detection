@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">SecurePay UPI</string>
+    <string name="title_activity_main">SecurePay UPI</string>
+    <string name="package_name">com.securepay.fraudguard</string>
+    <string name="custom_url_scheme">com.securepay.fraudguard</string>
+</resources>

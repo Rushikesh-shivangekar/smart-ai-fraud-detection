@@ -1,0 +1,733 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Brand & AI Color Palette */
+  --brand-purple: #7c4dff;
+  --brand-purple-dark: #512da8;
+  --brand-purple-light: #b388ff;
+  --brand-purple-gradient: linear-gradient(135deg, #7c4dff 0%, #4a148c 100%);
+  --brand-purple-glow: rgba(124, 77, 255, 0.35);
+
+  --brand-blue: #1a73e8;
+  --brand-blue-gradient: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+  --brand-teal: #00897b;
+  --brand-cyan: #06b6d4;
+
+  /* Dark Fintech App Backgrounds */
+  --bg-app: #0a0c14;
+  --bg-card: #131622;
+  --bg-card-glass: rgba(19, 22, 34, 0.85);
+  --bg-surface: #1a1e2e;
+  --bg-surface-hover: #23283d;
+  
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-active: rgba(124, 77, 255, 0.5);
+
+  /* Semantic Security Colors */
+  --sec-green: #00c853;
+  --sec-green-light: #69f0ae;
+  --sec-green-bg: rgba(0, 200, 83, 0.12);
+  --sec-green-border: rgba(0, 200, 83, 0.35);
+  --sec-green-glow: rgba(0, 200, 83, 0.3);
+
+  --sec-amber: #ff9800;
+  --sec-amber-light: #ffd54f;
+  --sec-amber-bg: rgba(255, 152, 0, 0.12);
+  --sec-amber-border: rgba(255, 152, 0, 0.35);
+
+  --sec-red: #f44336;
+  --sec-red-light: #ff8a80;
+  --sec-red-bg: rgba(244, 67, 54, 0.12);
+  --sec-red-border: rgba(244, 67, 54, 0.35);
+  --sec-red-glow: rgba(244, 67, 54, 0.4);
+
+  /* Text Colors */
+  --text-primary: #ffffff;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  /* Radius & Shadows */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+
+  --shadow-card: 0 8px 24px -4px rgba(0, 0, 0, 0.5);
+  --shadow-float: 0 16px 36px -6px rgba(0, 0, 0, 0.7);
+  --shadow-glow-green: 0 0 24px rgba(0, 200, 83, 0.25);
+  --shadow-glow-purple: 0 0 24px rgba(124, 77, 255, 0.25);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-image: 
+    radial-gradient(circle at 10% 10%, rgba(124, 77, 255, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 90% 90%, rgba(26, 115, 232, 0.12) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(0, 200, 83, 0.04) 0%, transparent 50%);
+  background-attachment: fixed;
+}
+
+h1, h2, h3, h4, h5, .font-heading {
+  font-family: 'Outfit', sans-serif;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* App Container */
+.app-container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* Phone Frame Showcase Layout (GPay / PhonePe Mobile Simulator) */
+.phone-wrapper-canvas {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 12px;
+  background-color: #05070d;
+  background-image: 
+    radial-gradient(circle at 15% 15%, rgba(124, 77, 255, 0.2) 0%, transparent 45%),
+    radial-gradient(circle at 85% 85%, rgba(26, 115, 232, 0.18) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(0, 200, 83, 0.05) 0%, transparent 50%);
+}
+
+.desktop-showcase-header {
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.phone-frame {
+  width: 100%;
+  max-width: 440px;
+  height: 890px;
+  max-height: 94vh;
+  background-color: var(--bg-app);
+  border-radius: 46px;
+  border: 10px solid #161a28;
+  box-shadow: 
+    0 25px 65px -12px rgba(0, 0, 0, 0.9),
+    0 0 35px rgba(124, 77, 255, 0.25),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.08);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Speaker Notch / Dynamic Island */
+.phone-notch-container {
+  position: absolute;
+  top: 9px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  z-index: 60;
+  pointer-events: none;
+}
+
+.phone-dynamic-island {
+  width: 110px;
+  height: 22px;
+  background-color: #000000;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.phone-camera-lens {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background-color: #0e1222;
+  border: 1.5px solid #1a2035;
+}
+
+.phone-speaker-grille {
+  width: 34px;
+  height: 3.5px;
+  border-radius: 3px;
+  background-color: #1a1e2e;
+}
+
+/* Status Bar */
+.phone-status-bar {
+  height: 40px;
+  padding: 10px 18px 0 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #f1f5f9;
+  z-index: 55;
+  background-color: transparent;
+  flex-shrink: 0;
+}
+
+.phone-status-icons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* App Shell (Fixed Frame Container) */
+.app-shell {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  min-height: 0;
+}
+
+/* App Screen Content (The only element that scrolls) */
+.app-screen-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 4px 12px 86px 12px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  min-height: 0;
+}
+
+.app-screen-content::-webkit-scrollbar {
+  display: none;
+}
+
+/* Phone Bottom Nav Dock (Pinned Fixed at Bottom) */
+.phone-bottom-nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: rgba(10, 12, 20, 0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 50;
+  padding: 0 4px 6px 4px;
+  flex-shrink: 0;
+}
+
+.phone-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px 4px;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+  flex: 1;
+}
+
+.phone-nav-item.active {
+  color: #c084fc;
+}
+
+.phone-nav-item.active .phone-nav-icon-wrap {
+  background: rgba(124, 77, 255, 0.22);
+  color: #c084fc;
+  box-shadow: 0 0 12px rgba(124, 77, 255, 0.4);
+}
+
+.phone-nav-icon-wrap {
+  width: 36px;
+  height: 28px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.phone-nav-label {
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Home Bar Gesture Indicator */
+.phone-home-indicator {
+  position: absolute;
+  bottom: 3px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 55;
+}
+
+.phone-home-bar {
+  width: 110px;
+  height: 4px;
+  border-radius: 3px;
+  background-color: rgba(255, 255, 255, 0.35);
+}
+
+/* Mobile Screen Fullscreen Override */
+@media (max-width: 520px) {
+  html, body {
+    height: 100%;
+    overflow: hidden;
+  }
+  .phone-wrapper-canvas {
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100vh;
+    max-height: 100dvh;
+    background: var(--bg-app);
+    overflow: hidden;
+  }
+  .desktop-showcase-header {
+    display: none;
+  }
+  .phone-frame {
+    max-width: 100%;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100vh;
+    max-height: 100dvh;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+  }
+  .phone-notch-container {
+    display: none;
+  }
+  .phone-status-bar {
+    display: none;
+  }
+}
+
+/* Cards & Panels */
+.pay-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  transition: all 0.2s ease;
+}
+
+.pay-card-clickable {
+  cursor: pointer;
+}
+
+.pay-card-clickable:hover {
+  background: var(--bg-surface);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+/* AI Security Status Card on Home Dashboard */
+.ai-security-status-card {
+  background: linear-gradient(135deg, #0b2216 0%, #0d281a 50%, #101c26 100%);
+  border: 1.5px solid rgba(0, 200, 83, 0.35);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px -4px rgba(0, 200, 83, 0.2);
+}
+
+.ai-security-status-card::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 200, 83, 0.2) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Action Circles */
+.action-circle-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 8px 4px;
+  transition: all 0.2s ease;
+}
+
+.action-circle-btn:hover {
+  transform: translateY(-3px);
+}
+
+.action-icon-circle {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.5);
+  transition: all 0.2s ease;
+}
+
+.action-circle-btn:hover .action-icon-circle {
+  transform: scale(1.06);
+}
+
+.action-circle-purple {
+  background: linear-gradient(135deg, #7c4dff 0%, #512da8 100%);
+  box-shadow: 0 8px 20px -2px rgba(124, 77, 255, 0.35);
+}
+
+.action-circle-blue {
+  background: linear-gradient(135deg, #29b6f6 0%, #0288d1 100%);
+  box-shadow: 0 8px 20px -2px rgba(41, 182, 246, 0.35);
+}
+
+.action-circle-teal {
+  background: linear-gradient(135deg, #26a69a 0%, #00796b 100%);
+  box-shadow: 0 8px 20px -2px rgba(38, 166, 154, 0.35);
+}
+
+.action-circle-amber {
+  background: linear-gradient(135deg, #ffa726 0%, #f57c00 100%);
+  box-shadow: 0 8px 20px -2px rgba(255, 167, 38, 0.35);
+}
+
+.action-label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #e2e8f0;
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* Contact Avatar Item */
+.contact-avatar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  min-width: 72px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.contact-avatar-item:hover {
+  transform: translateY(-2px);
+}
+
+.contact-avatar-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 15px;
+  color: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.contact-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: #cbd5e1;
+  max-width: 70px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Trust / Verification Badges */
+.trust-badge {
+  font-size: 9px;
+  font-weight: 800;
+  padding: 1.5px 5px;
+  border-radius: 4px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.trust-badge-verified {
+  background: rgba(0, 200, 83, 0.15);
+  color: #00c853;
+  border: 1px solid rgba(0, 200, 83, 0.35);
+}
+
+.trust-badge-merchant {
+  background: rgba(41, 182, 246, 0.15);
+  color: #29b6f6;
+  border: 1px solid rgba(41, 182, 246, 0.35);
+}
+
+.trust-badge-warning {
+  background: rgba(255, 152, 0, 0.15);
+  color: #ff9800;
+  border: 1px solid rgba(255, 152, 0, 0.35);
+}
+
+.trust-badge-danger {
+  background: rgba(244, 67, 54, 0.15);
+  color: #f44336;
+  border: 1px solid rgba(244, 67, 54, 0.35);
+}
+
+/* Buttons */
+.btn-pay-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 22px;
+  background: var(--brand-purple-gradient);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 16px var(--brand-purple-glow);
+}
+
+.btn-pay-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 22px rgba(124, 77, 255, 0.5);
+  background: linear-gradient(135deg, #8e62ff 0%, #5e35b1 100%);
+}
+
+.btn-pay-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-pay-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-pay-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-pay-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 22px;
+  background: linear-gradient(135deg, #f44336 0%, #b71c1c 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 15px;
+  cursor: not-allowed;
+  box-shadow: 0 4px 16px rgba(244, 67, 54, 0.4);
+}
+
+/* Modern Input */
+.pay-input {
+  width: 100%;
+  padding: 13px 16px;
+  background: rgba(10, 12, 20, 0.75);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 14.5px;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.pay-input:focus {
+  border-color: var(--brand-purple-light);
+  box-shadow: 0 0 0 3px rgba(124, 77, 255, 0.25);
+  background: rgba(10, 12, 20, 0.95);
+}
+
+.pay-input::placeholder {
+  color: var(--text-muted);
+}
+
+/* Status Chips */
+.upi-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.upi-chip-safe {
+  background: var(--sec-green-bg);
+  color: var(--sec-green);
+  border: 1px solid var(--sec-green-border);
+}
+
+.upi-chip-verify {
+  background: var(--sec-amber-bg);
+  color: var(--sec-amber);
+  border: 1px solid var(--sec-amber-border);
+}
+
+.upi-chip-block {
+  background: var(--sec-red-bg);
+  color: var(--sec-red);
+  border: 1px solid var(--sec-red-border);
+}
+
+/* Scanner Viewfinder Box */
+.qr-viewfinder {
+  position: relative;
+  width: 250px;
+  height: 250px;
+  margin: 0 auto;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 0 2000px rgba(0, 0, 0, 0.65);
+}
+
+.qr-corner {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border: 3.5px solid #29b6f6;
+}
+
+.qr-corner-tl { top: 0; left: 0; border-right: none; border-bottom: none; border-top-left-radius: 14px; }
+.qr-corner-tr { top: 0; right: 0; border-left: none; border-bottom: none; border-top-right-radius: 14px; }
+.qr-corner-bl { bottom: 0; left: 0; border-right: none; border-top: none; border-bottom-left-radius: 14px; }
+.qr-corner-br { bottom: 0; right: 0; border-left: none; border-top: none; border-bottom-right-radius: 14px; }
+
+.qr-laser-line {
+  position: absolute;
+  top: 0;
+  left: 10px;
+  right: 10px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #29b6f6, #7c4dff, #29b6f6, transparent);
+  box-shadow: 0 0 12px 3px rgba(41, 182, 246, 0.7);
+  animation: scanLaser 2.2s ease-in-out infinite alternate;
+}
+
+@keyframes scanLaser {
+  0% { top: 10px; }
+  100% { top: 230px; }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 1; filter: drop-shadow(0 0 10px rgba(0, 200, 83, 0.7)); }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
+@keyframes pulseGlowRed {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 1; filter: drop-shadow(0 0 10px rgba(244, 67, 54, 0.7)); }
+}
+
+.animate-pulse-glow-red {
+  animation: pulseGlowRed 1.8s infinite ease-in-out;
+}
+
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spinSlow 3s linear infinite;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-app);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #22273d;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #333a59;
+}

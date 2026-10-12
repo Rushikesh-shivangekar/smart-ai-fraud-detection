@@ -1,0 +1,262 @@
+import streamlit as st
+import requests
+import time
+import pandas as pd
+
+st.set_page_config(page_title="Fraud Detection System", layout="wide")
+
+# =========================
+# SESSION STATE
+# =========================
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+if "username" not in st.session_state:
+    st.session_state.username = ""
+
+if "page" not in st.session_state:
+    st.session_state.page = "Dashboard"
+
+
+# =========================
+# LOGIN PAGE
+# =========================
+if not st.session_state.logged_in:
+    st.title("Login")
+
+    user = st.text_input("Username")
+    pwd = st.text_input("Password", type="password")
+
+    if st.button("Login"):
+        try:
+            res = requests.post(
+                "http://127.0.0.1:8000/login",
+                json={"username": user, "password": pwd}
+            )
+
+            data = res.json()
+
+            if data.get("status") == "success":
+                st.session_state.logged_in = True
+                st.session_state.username = user
+                st.success("Login Successful")
+                st.rerun()
+            else:
+                st.error("Invalid Credentials")
+
+        except:
+            st.error("Backend not running")
+
+    st.stop()
+
+
+# =========================
+# SIDEBAR
+# =========================
+st.sidebar.title("Navigation")
+
+menu = st.sidebar.radio("Go to", [
+    "Dashboard",
+    "Scan QR",
+    "Pay Anyone",
+    "Check Balance",
+    "Account Details",
+    "Transaction History"
+])
+
+st.session_state.page = menu
+
+
+# =========================
+# DASHBOARD
+# =========================
+if st.session_state.page == "Dashboard":
+    st.title("Dashboard")
+
+    res = requests.get(f"http://127.0.0.1:8000/dashboard/{st.session_state.username}")
+    data = res.json()
+
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Balance", f"₹{data['balance']}")
+    col2.metric("Transactions", data["transactions"])
+    col3.metric("Fraud Alerts", data["fraud_alerts"])
+
+
+# =========================
+# SCAN QR
+# =========================
+elif st.session_state.page == "Scan QR":
+    st.title("Scan QR Payment")
+
+    st.info("QR scanned successfully")
+
+    st.session_state.qr_amount = 5000
+    st.session_state.qr_merchant = "merchant@upi"
+
+    st.write("Merchant:", st.session_state.qr_merchant)
+    st.write("QR Amount:", st.session_state.qr_amount)
+
+    amt = st.number_input("Enter Amount", min_value=0)
+
+    if st.button("Check Fraud"):
+
+        # 🔥 QR TAMPER CHECK
+        if amt != st.session_state.qr_amount:
+            st.error("QR amount mismatch detected. Do not proceed.")
+        
+        data = {
+            "amt": amt,
+            "qr_amount": st.session_state.qr_amount,
+            "gender": "M",
+            "category": "shopping_pos",
+            "username": st.session_state.username
+        }
+
+        with st.spinner("Analyzing transaction..."):
+            time.sleep(2)
+
+        res = requests.post("http://127.0.0.1:8000/pay", json=data)
+        result = res.json()
+
+        # 🔥 BETTER RESULT UI
+        st.subheader("Fraud Analysis Result")
+
+        st.write("Final Score:", result.get("final_score"))
+        st.write("Risk Level:", result.get("risk_level"))
+
+        if result.get("risk_level") == "Low":
+            st.success("Safe to proceed")
+
+        elif result.get("risk_level") == "Medium":
+            st.warning("OTP verification required")
+
+        else:
+            st.error("Transaction blocked due to high risk")
+
+        # OTP FLOW
+        if result.get("risk_level") == "Medium":
+            otp_res = requests.post(
+                "http://127.0.0.1:8000/generate-otp",
+                json={"username": st.session_state.username}
+            )
+
+            otp = otp_res.json()["otp"]
+            st.info(f"OTP: {otp}")
+
+            user_otp = st.text_input("Enter OTP")
+
+            if st.button("Verify OTP"):
+                verify = requests.post(
+                    "http://127.0.0.1:8000/verify-otp",
+                    json={
+                        "username": st.session_state.username,
+                        "otp": user_otp
+                    }
+                )
+
+                if verify.json()["status"] == "verified":
+                    st.success("Payment Successful")
+                else:
+                    st.error("Invalid OTP")
+
+
+# =========================
+# PAY ANYONE
+# =========================
+elif st.session_state.page == "Pay Anyone":
+    st.title("Pay to UPI / Phone")
+
+    upi = st.text_input("Enter UPI / Phone")
+    amt = st.number_input("Enter Amount", min_value=0)
+
+    if st.button("Check Fraud"):
+
+        data = {
+            "amt": amt,
+            "qr_amount": amt,
+            "gender": "M",
+            "category": "shopping_pos",
+            "username": st.session_state.username
+        }
+
+        with st.spinner("Analyzing transaction..."):
+            time.sleep(2)
+
+        res = requests.post("http://127.0.0.1:8000/pay", json=data)
+        result = res.json()
+
+        st.subheader("Fraud Analysis Result")
+
+        st.write("Final Score:", result.get("final_score"))
+        st.write("Risk Level:", result.get("risk_level"))
+
+        if result.get("risk_level") == "Low":
+            st.success("Safe to proceed")
+
+        elif result.get("risk_level") == "Medium":
+            st.warning("OTP verification required")
+
+        else:
+            st.error("Transaction blocked due to high risk")
+
+        # OTP FLOW
+        if result.get("risk_level") == "Medium":
+            otp_res = requests.post(
+                "http://127.0.0.1:8000/generate-otp",
+                json={"username": st.session_state.username}
+            )
+
+            otp = otp_res.json()["otp"]
+            st.info(f"OTP: {otp}")
+
+            user_otp = st.text_input("Enter OTP")
+
+            if st.button("Verify OTP"):
+                verify = requests.post(
+                    "http://127.0.0.1:8000/verify-otp",
+                    json={
+                        "username": st.session_state.username,
+                        "otp": user_otp
+                    }
+                )
+
+                if verify.json()["status"] == "verified":
+                    st.success("Payment Successful")
+                else:
+                    st.error("Invalid OTP")
+
+
+# =========================
+# BALANCE
+# =========================
+elif st.session_state.page == "Check Balance":
+    st.title("Account Balance")
+
+    res = requests.get(f"http://127.0.0.1:8000/dashboard/{st.session_state.username}")
+    data = res.json()
+
+    st.metric("Balance", f"₹{data['balance']}")
+
+
+# =========================
+# ACCOUNT DETAILS
+# =========================
+elif st.session_state.page == "Account Details":
+    st.title("Account Details")
+
+    st.write("Username:", st.session_state.username)
+    st.write("Bank: Demo Bank")
+    st.write("UPI:", f"{st.session_state.username}@upi")
+
+
+# =========================
+# TRANSACTION HISTORY
+# =========================
+elif st.session_state.page == "Transaction History":
+    st.title("Transaction History")
+
+    res = requests.get(f"http://127.0.0.1:8000/transactions/{st.session_state.username}")
+    data = res.json()
+
+    df = pd.DataFrame(data)
+    st.dataframe(df)
